@@ -1,0 +1,55 @@
+{
+    "name": "@alphanull/domsmith",
+    "license": "MIT",
+    "version": "2.0.0",
+    "description": "DomSmith is a lightweight and declarative DOM builder for JavaScript that enables you to create, update, and remove DOM trees with an intuitive API.",
+    "keywords": [
+        "dom",
+        "dom builder",
+        "html",
+        "svg",
+        "event handling",
+        "declarative",
+        "ui",
+        "frontend"
+    ],
+    "author": {
+        "name": "Frank Kudermann",
+        "email": "kudermann@alphanull.de",
+        "url": "https://alphanull.de"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/alphanull/domsmith.git"
+    },
+    "homepage": "https://github.com/alphanull/domsmith#readme",
+    "bugs": {
+        "url": "https://github.com/alphanull/domsmith/issues"
+    },
+    "type": "module",
+    "module": "./dist/DomSmith.min.js",
+    "files": [
+        "dist"
+    ],
+    "sideEffects": false,
+    "engines": {
+        "node": ">=16.0.0"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.22.0",
+        "@rollup/plugin-node-resolve": "^16.0.1",
+        "@rollup/plugin-terser": "^0.4.4",
+        "@stylistic/eslint-plugin": "^4.2.0",
+        "eslint": "^9.22.0",
+        "globals": "^15.15.0",
+        "jsdoc": "^4.0.4",
+        "jsdoc-to-markdown": "^9.1.1",
+        "rollup": "^4.39.0",
+        "rollup-plugin-delete": "^3.0.1"
+    },
+    "scripts": {
+        "doc": "jsdoc2md --private --separators --template ./scripts/docTemplate.hbs --files ./src/*.js > ./docs/DomSmith.md",
+        "lint": "echo 'Running ESLint...' && eslint src/ --max-warnings=0",
+        "build": "npm run lint && rollup -c ./scripts/rollup.config.js"
+    }
+}

@@ -1,0 +1,5 @@
+# Ensure consistent line endings
+* text=auto
+
+# Ignore Handlebars for GitHub language stats
+*.hbs linguist-detectable=false
