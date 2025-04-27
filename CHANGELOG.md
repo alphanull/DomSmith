@@ -6,6 +6,17 @@ This project adheres to [Semantic Versioning](https://semver.org) and follows th
 
 ---
 
+## [2.0.1] – 2025-04-27
+
+### Added
+
+- **@alphanull/domsmith is on npm now!**
+
+### Changed
+
+- updated inline documentation
+- updated README.md
+
 ## [2.0.0] – 2025-04-09
 
 ### Added

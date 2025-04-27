@@ -1,16 +1,18 @@
-/* eslint-disable @stylistic/quote-props */
+/* eslint-disable @stylistic/max-len, @stylistic/quote-props  */
 
 import globals from 'globals';
 import pluginJs from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
+import jsdoc from 'eslint-plugin-jsdoc';
 
 export default [pluginJs.configs.recommended, stylistic.configs.recommended, {
 
-    files: ['**/*.js'],
+    files: ['**/*.js', '**/*.cjs', '**/*.mjs', '**/*.ts'],
     ignores: ['**/*.dev.js', '**/*.test.js'],
 
     plugins: {
-        '@stylistic': stylistic
+        '@stylistic': stylistic,
+        jsdoc
     },
 
     languageOptions: {
@@ -19,7 +21,36 @@ export default [pluginJs.configs.recommended, stylistic.configs.recommended, {
         globals: {
             Consolero: true,
             _: true,
+            mdoule: true,
+            require: true,
             ...globals.browser
+        }
+    },
+
+    settings: {
+        jsdoc: {
+            mode: 'jsdoc',
+            tagNamePreference: {
+                remove: 'remove',
+                endremove: 'endremove'
+            },
+            preferredTypes: {
+                object: 'Object'
+            },
+            structuredTags: {
+                event: {
+                    name: 'text',
+                    type: true
+                },
+                listens: {
+                    name: 'text',
+                    type: true
+                },
+                fires: {
+                    name: 'text',
+                    type: true
+                }
+            }
         }
     },
 
@@ -34,7 +65,6 @@ export default [pluginJs.configs.recommended, stylistic.configs.recommended, {
         'capitalized-comments': 0,
         'curly': ['warn', 'multi-line'],
         'default-case-last': 'warn',
-        'default-param-last': 'warn',
         'dot-notation': 'warn',
         'eqeqeq': 'error',
         'func-style': 0,
@@ -95,7 +125,7 @@ export default [pluginJs.configs.recommended, stylistic.configs.recommended, {
         'no-unreachable-loop': 'error',
         'no-unused-expressions': 'error',
         'no-undef-init': 'error',
-        'no-undefined': 'error',
+        // 'no-undefined': 'error',
         'no-use-before-define': ['error', { functions: false }],
         'no-useless-assignment': 'error',
         'no-useless-concat': 'error',
@@ -123,6 +153,7 @@ export default [pluginJs.configs.recommended, stylistic.configs.recommended, {
         'strict': ['error', 'function'],
         'yoda': 'error',
 
+        // Stylistic Rules
         '@stylistic/arrow-parens': ['warn', 'as-needed'],
         '@stylistic/arrow-spacing': 'warn',
         '@stylistic/array-bracket-spacing': ['warn', 'never'],
@@ -132,8 +163,8 @@ export default [pluginJs.configs.recommended, stylistic.configs.recommended, {
         '@stylistic/comma-dangle': ['warn', 'never'],
         '@stylistic/comma-spacing': ['warn', { before: false, after: true }],
         '@stylistic/computed-property-spacing': ['warn', 'never'],
-        '@stylistic/curly-newline': ['warn', { multiline: true, minElements: 1, consistent: true }],
-        '@stylistic/dot-location': ['warn', 'object'],
+        '@stylistic/curly-newline': ['warn', { multiline: true, minElements: 2, consistent: true }],
+        '@stylistic/dot-location': ['warn', 'property'],
         '@stylistic/eol-last': 'warn',
         '@stylistic/func-call-spacing': ['warn', 'never'],
         '@stylistic/function-call-argument-newline': ['warn', 'consistent'],
@@ -151,7 +182,7 @@ export default [pluginJs.configs.recommended, stylistic.configs.recommended, {
         '@stylistic/multiline-ternary': 0,
         '@stylistic/multiline-comment-style': 0,
         '@stylistic/newline-per-chained-call': 0,
-        '@stylistic/no-confusing-arrow': ['warn', { allowParens: true }],
+        '@stylistic/no-confusing-arrow': ['warn', { allowParens: true, onlyOneSimpleParam: true }],
         '@stylistic/no-extra-parens': ['warn', 'all', { conditionalAssign: false, enforceForArrowConditionals: false }],
         '@stylistic/no-extra-semi': 'warn',
         '@stylistic/no-floating-decimal': 'warn',
@@ -184,7 +215,170 @@ export default [pluginJs.configs.recommended, stylistic.configs.recommended, {
         '@stylistic/template-curly-spacing': 'warn',
         '@stylistic/template-tag-spacing': ['warn', 'always'],
         '@stylistic/wrap-iife': 'warn',
-        '@stylistic/yield-star-spacing': 'warn'
+        '@stylistic/yield-star-spacing': 'warn',
+
+        // JSDoc Rules
+        'jsdoc/check-access': 'warn',
+        'jsdoc/check-alignment': 'warn',
+        'jsdoc/check-examples': 0,
+        'jsdoc/check-indentation': 'warn',
+        'jsdoc/check-line-alignment': ['warn', 'always', { customSpacings: { postDelimiter: 1, postTag: 1, postType: 1, postName: 2 }, tags: ['param', 'arg', 'argument', 'property', 'prop', 'returns', 'type', 'module', 'requires', 'augments', 'throws'] }],
+        'jsdoc/check-param-names': 'error',
+        'jsdoc/check-template-names': 'warn',
+        'jsdoc/check-property-names': 'warn',
+        'jsdoc/check-syntax': 'error',
+        'jsdoc/check-tag-names': 'warn',
+        'jsdoc/check-types': 'warn',
+        'jsdoc/check-values': 'warn',
+        'jsdoc/empty-tags': 'warn',
+        'jsdoc/implements-on-classes': 'warn',
+        'jsdoc/informative-docs': 'warn',
+        'jsdoc/match-description': 'warn',
+        'jsdoc/multiline-blocks': 'warn',
+        'jsdoc/no-bad-blocks': 'error',
+        'jsdoc/no-blank-block-descriptions': 'warn',
+        'jsdoc/no-defaults': 0,
+        'jsdoc/no-missing-syntax': 0,
+        'jsdoc/no-multi-asterisks': 'warn',
+        'jsdoc/no-restricted-syntax': 0,
+        'jsdoc/no-types': 0,
+        'jsdoc/no-undefined-types': 'error',
+        'jsdoc/require-asterisk-prefix': 'warn',
+        'jsdoc/require-description': 'warn',
+        'jsdoc/require-description-complete-sentence': 'warn',
+        'jsdoc/require-example': 0,
+        'jsdoc/require-file-overview': 0,
+        'jsdoc/require-hyphen-before-param-description': ['warn', 'never'],
+        'jsdoc/require-jsdoc': ['error', { require: { FunctionDeclaration: true, ClassDeclaration: true, ClassExpression: true, MethodDefinition: true } }],
+        'jsdoc/require-param': 'warn',
+        'jsdoc/require-param-description': 'warn',
+        'jsdoc/require-param-name': 'warn',
+        'jsdoc/require-param-type': 'warn',
+        'jsdoc/require-property': 'warn',
+        'jsdoc/require-property-description': 'warn',
+        'jsdoc/require-property-name': 'warn',
+        'jsdoc/require-property-type': 'warn',
+        'jsdoc/require-returns': ['warn', { forceReturnsWithAsync: false }],
+        'jsdoc/require-returns-check': 'warn',
+        'jsdoc/require-returns-description': 'warn',
+        'jsdoc/require-returns-type': 'warn',
+        'jsdoc/require-template': 'warn',
+        'jsdoc/require-throws': 'warn',
+        'jsdoc/require-yields': 'warn',
+        'jsdoc/require-yields-check': 'warn',
+        'jsdoc/sort-tags': ['warn', { tagSequence: [{ tags: [
+            // Brief descriptions
+            'summary',
+            'typeSummary',
+            // Module/file-level
+            'module',
+            'exports',
+            'file',
+            'fileoverview',
+            'overview',
+            'import',
+            // Access
+            'static',
+            'private',
+            'protected',
+            'public',
+            'access',
+            'package',
+            '-other',
+            // Simple annotations
+            'const',
+            'constant',
+            'final',
+            'global',
+            'readonly',
+            'abstract',
+            'virtual',
+            'var',
+            'member',
+            'memberof',
+            'memberof!',
+            'inner',
+            'instance',
+            'inheritdoc',
+            'inheritDoc',
+            'override',
+            'hideconstructor',
+            // Identifying (name, type)
+            'event',
+            'typedef',
+            'interface',
+            'record',
+            'template',
+            'name',
+            'kind',
+            'type',
+            'alias',
+            'external',
+            'host',
+            'callback',
+            'func',
+            'function',
+            'method',
+            'class',
+            'constructor',
+            // Relationships
+            'modifies',
+            'mixes',
+            'mixin',
+            'mixinClass',
+            'mixinFunction',
+            'namespace',
+            'borrows',
+            'constructs',
+            'lends',
+            'implements',
+            'requires',
+            // Core function/object info
+            'param',
+            'arg',
+            'argument',
+            'prop',
+            'property',
+            'return',
+            'returns',
+            // Important behavior details
+            'async',
+            'generator',
+            'default',
+            'defaultvalue',
+            'enum',
+            'augments',
+            'extends',
+            'throws',
+            'exception',
+            'yield',
+            'yields',
+            'fires',
+            'emits',
+            'listens',
+            'this',
+            // METADATA
+            // Non-Closure metadata
+            'ignore',
+            'author',
+            'version',
+            'variation',
+            'since',
+            'deprecated',
+            'todo',
+            // Long descriptions
+            'desc',
+            'description',
+            'classdesc',
+            'tutorial',
+            'copyright',
+            'license',
+            // Supplementary descriptions
+            'see',
+            'example'
+        ] }] }],
+        'jsdoc/tag-lines': 'warn',
+        'jsdoc/valid-types': 'warn'
 
     }
 

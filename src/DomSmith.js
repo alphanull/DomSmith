@@ -5,26 +5,26 @@
  * and references when the `teardown()` or `removeNode()` methods are called.
  * This is especially useful for building UI components in a modular way where nodes can
  * be dynamically added, updated, or removed.
- *
+ * @module DomSmith
  * @author    Frank Kudermann @ alphanull
- * @version   2.0.0
- * @module    DomSmith
+ * @version   2.0.1
  */
 export default class DomSmith {
 
     /**
      * @typedef  {Object} module:DomSmith~NodeDefinition       Structure of a node definition
-     * @property {string}                                     [tag]     Tag name of the element. Defaults to 'div' if unspecified.
-     * @property {string}                                     [text]    Text content for text nodes.
-     * @property {string}                                     [ref]     A unique reference name used to store a direct reference on the DomSmith instance.
-     * @property {Object.<string, Function|Function[]>}       [events]  Object containing event names and their handler(s).
-     * @property {*}                                          [any]     Additional properties that will be assigned either directly or via setAttribute.
-     * @property {module:DomSmith~NodeDefinition[]}  [nodes]   Child node definitions; can be a single NodeDefinition, a string, or an array of them.
+     * @property {string}                               [tag]     Tag name of the element. Defaults to 'div' if unspecified.
+     * @property {string}                               [text]    Text content for text nodes.
+     * @property {string}                               [ref]     A unique reference name used to store a direct reference on the DomSmith instance.
+     * @property {Object.<string, Function|Function[]>} [events]  Object containing event names and their handler(s).
+     * @property {*}                                    [any]     Additional properties that will be assigned either directly or via setAttribute.
+     * @property {module:DomSmith~NodeDefinition[]}     [nodes]   Child node definitions; can be a single NodeDefinition, a string, or an array of them.
      */
 
     /**
-     * @param {module:DomSmith~NodeDefinition|module:DomSmith~NodeDefinition[]|string}    nodeDef   Node definition. Can be an object, a string, or an array of definitions.
-     * @param {HTMLElement}      [parentNode]          The parent node to mount the DOM elements to.
+     * Creates a new DomSmith instance.
+     * @param {module:DomSmith~NodeDefinition|module:DomSmith~NodeDefinition[]|string} nodeDef       Node definition. Can be an object, a string, or an array of definitions.
+     * @param {HTMLElement}                                                            [parentNode]  The parent node to mount the DOM elements to.
      */
     constructor(nodeDef, parentNode) {
 
@@ -36,9 +36,9 @@ export default class DomSmith {
         if (parentNode) rootParent = { _ele: parentNode, nodes: [] };
 
         /**
-         * Stores additional node data for cleanup
+         * Stores additional node data for cleanup.
          * @private
-         * @type {WeakMap<HTMLElement, Object>}
+         * @type {WeakMap}
          */
         this._refs = new WeakMap();
 
@@ -74,7 +74,7 @@ export default class DomSmith {
     /**
      * Mounts the created DOM element(s) into the specified parent node.
      * For multiple nodes, each element is appended individually.
-     * @param {HTMLElement} parentNode The parent node to mount the DOM elements to.
+     * @param {HTMLElement} parentNode  The parent node to mount the DOM elements to.
      */
     mount(parentNode) {
 
@@ -110,9 +110,10 @@ export default class DomSmith {
     /**
      * Adds a DOM node based on a declarative definition.
      * Supports string, object, or an array of node definitions.
-     * @param {module:DomSmith~NodeDefinition}  nodeDefArg  Node definition or an array of definitions.
-     * @param {Object}                                  [parent]     Parent object (synthetic) to assign to the newly created node.
-     * @returns {module:DomSmith~NodeDefinition|module:DomSmith~NodeDefinition[]}  A node definition object or an array of such objects.
+     * @param   {module:DomSmith~NodeDefinition}                                  nodeDefArg  Node definition or an array of definitions.
+     * @param   {Object}                                                          [parent]    Parent object (synthetic) to assign to the newly created node.
+     * @returns {module:DomSmith~NodeDefinition|module:DomSmith~NodeDefinition[]}             A node definition object or an array of such objects.
+     * @throws  {Error}                                                                       If trying to add a duplicate ref or a property was not found.
      */
     addNode(nodeDefArg, parent) {
 
@@ -131,7 +132,7 @@ export default class DomSmith {
         }
 
         // Helper function: assign a value to a property by path (e.g., 'style.color')
-        function assignWithPath(obj, path, value) {
+        function assignWithPath(obj, path, value) { // eslint-disable-line jsdoc/require-jsdoc
             const pathArray = path.split('.'),
                   pathObj = pathArray.slice(0, -1).reduce((acc, key) => (typeof acc === 'undefined' || typeof acc[key] === 'undefined' ? null : acc[key]), obj);
             if (typeof pathObj !== 'object' || pathObj === null) throw new Error(`[DomSmith] Did not find property with path: ${path}`);
@@ -232,8 +233,9 @@ export default class DomSmith {
     /**
      * Replaces an existing DOM node (specified by its ref) with a new node definition.
      * This method first removes all events from the old node, then replaces it in the DOM.
-     * @param {string}                                  ref         Reference name of the node to be replaced.
-     * @param {module:DomSmith~NodeDefinition} replaceDef  The new node definition to replace the old node.
+     * @param  {string}                         ref         Reference name of the node to be replaced.
+     * @param  {module:DomSmith~NodeDefinition} replaceDef  The new node definition to replace the old node.
+     * @throws {Error}                                      If an invalid ref was used.
      */
     replaceNode(ref, replaceDef) {
 
@@ -288,9 +290,10 @@ export default class DomSmith {
 
     /**
      * Adds an event listener to the specified element and registers it in the central events repository.
-     * @param {HTMLElement|string}  eleOrRef     Target DOM element or ref.
-     * @param {string}              eventName    Event name (e.g., 'click').
-     * @param {Function|Function[]} handler      Event handler(s) to add.
+     * @param  {HTMLElement|string}  eleOrRef   Target DOM element or ref.
+     * @param  {string}              eventName  Event name (e.g., 'click').
+     * @param  {Function|Function[]} handler    Event handler(s) to add.
+     * @throws {Error}                          If element was not found, or handler is not a function.
      */
     addEvent(eleOrRef, eventName, handler) {
 
@@ -323,9 +326,10 @@ export default class DomSmith {
      * If no eventName and handler are provided, all event listeners for that element are removed.
      * If an eventName is provided but no handler, then all handlers for that event are removed.
      * Otherwise, only the specified handler for the given eventName is removed.
-     * @param {HTMLElement|string}  eleOrRef       Target DOM element or ref.
-     * @param {string}             [eventName]     Event name (e.g., 'click').
-     * @param {Function}           [handler]       Event handler to remove.
+     * @param  {HTMLElement|string} eleOrRef     Target DOM element or ref.
+     * @param  {string}             [eventName]  Event name (e.g., 'click').
+     * @param  {Function}           [handler]    Event handler to remove.
+     * @throws {Error}                           If element or ref was not found.
      */
     removeEvent(eleOrRef, eventName, handler) {
 
@@ -368,9 +372,8 @@ export default class DomSmith {
 
     /**
      * Returns an array of supported DOM event names for the given tag.
-     *
-     * @param {string} [tag='div'] - The tag for which to retrieve supported events.
-     * @returns {string[]} Sorted array of event names.
+     * @param   {string}   [tag='div']  The tag for which to retrieve supported events.
+     * @returns {string[]}              Sorted array of event names.
      */
     static getSupportedDomEvents(tag = 'div') {
 

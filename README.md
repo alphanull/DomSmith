@@ -1,5 +1,5 @@
 ![License](https://img.shields.io/github/license/alphanull/domsmith)
-![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Version](https://img.shields.io/badge/version-2.0.1-blue)
 [![JSDoc](https://img.shields.io/badge/docs-JSDoc-blue)](./docs/DomSmith.md)
 ![Size](https://img.shields.io/badge/gzipped~2kb-brightgreen)
 
@@ -22,15 +22,13 @@
 
 ### via NPM
 
-**ATTN: Package is not on npm yet due to namespace clearance!**
-
 ```bash
 npm install @alphanull/domsmith
 ```
 
 ### via CDN
 
-**Also, no CDN (yet)**
+** no CDN (yet)**
 
 [Download latest version](https://??????) from ????????
 

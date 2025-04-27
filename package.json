@@ -1,7 +1,7 @@
 {
     "name": "@alphanull/domsmith",
     "license": "MIT",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "DomSmith is a lightweight and declarative DOM builder for JavaScript that enables you to create, update, and remove DOM trees with an intuitive API.",
     "keywords": [
         "dom",
@@ -29,8 +29,13 @@
     "type": "module",
     "module": "./dist/DomSmith.min.js",
     "files": [
-        "dist"
+        "dist",
+        "README.md",
+        "LICENSE"
     ],
+    "publishConfig": {
+        "access": "public"
+    },
     "sideEffects": false,
     "engines": {
         "node": ">=16.0.0"
@@ -41,6 +46,7 @@
         "@rollup/plugin-terser": "^0.4.4",
         "@stylistic/eslint-plugin": "^4.2.0",
         "eslint": "^9.22.0",
+        "eslint-plugin-jsdoc": "^50.6.9",
         "globals": "^15.15.0",
         "jsdoc": "^4.0.4",
         "jsdoc-to-markdown": "^9.1.1",

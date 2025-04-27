@@ -10,14 +10,14 @@ and references when the `teardown()` or `removeNode()` methods are called.
 This is especially useful for building UI components in a modular way where nodes can
 be dynamically added, updated, or removed.
 
-**Version**: 2.0.0  
+**Version**: 2.0.1  
 **Author**: Frank Kudermann @ alphanull  
 
 * [DomSmith](#module_DomSmith)
     * [module.exports](#exp_module_DomSmith--module.exports) ⏏
         * [new module.exports(nodeDef, [parentNode])](#new_module_DomSmith--module.exports_new)
         * _instance_
-            * [._refs](#module_DomSmith--module.exports+_refs) : <code>WeakMap.&lt;HTMLElement, Object&gt;</code> ℗
+            * [._refs](#module_DomSmith--module.exports+_refs) : <code>WeakMap</code> ℗
             * [._events](#module_DomSmith--module.exports+_events) : <code>WeakMap.&lt;HTMLElement, Object&gt;</code> ℗
             * [._dom](#module_DomSmith--module.exports+_dom) : [<code>NodeDefinition</code>](#module_DomSmith--module.exports..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith--module.exports..NodeDefinition) ℗
             * [._parent](#module_DomSmith--module.exports+_parent) : <code>HTMLElement</code> ℗
@@ -47,6 +47,8 @@ be dynamically added, updated, or removed.
 <a name="new_module_DomSmith--module.exports_new"></a>
 
 #### new module.exports(nodeDef, [parentNode])
+Creates a new DomSmith instance.
+
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -58,8 +60,8 @@ be dynamically added, updated, or removed.
 
 <a name="module_DomSmith--module.exports+_refs"></a>
 
-#### module.exports.\_refs : <code>WeakMap.&lt;HTMLElement, Object&gt;</code> ℗
-Stores additional node data for cleanup
+#### module.exports.\_refs : <code>WeakMap</code> ℗
+Stores additional node data for cleanup.
 
 **Kind**: instance property of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
 **Access**: private  
@@ -129,6 +131,10 @@ Supports string, object, or an array of node definitions.
 
 **Kind**: instance method of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
 **Returns**: [<code>NodeDefinition</code>](#module_DomSmith--module.exports..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith--module.exports..NodeDefinition) - A node definition object or an array of such objects.  
+**Throws**:
+
+- <code>Error</code> If trying to add a duplicate ref or a property was not found.
+
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -145,6 +151,10 @@ Replaces an existing DOM node (specified by its ref) with a new node definition.
 This method first removes all events from the old node, then replaces it in the DOM.
 
 **Kind**: instance method of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
+**Throws**:
+
+- <code>Error</code> If an invalid ref was used.
+
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -175,6 +185,10 @@ If the passed node definition is an array, iterates through each element.
 Adds an event listener to the specified element and registers it in the central events repository.
 
 **Kind**: instance method of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
+**Throws**:
+
+- <code>Error</code> If element was not found, or handler is not a function.
+
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -194,6 +208,10 @@ If an eventName is provided but no handler, then all handlers for that event are
 Otherwise, only the specified handler for the given eventName is removed.
 
 **Kind**: instance method of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
+**Throws**:
+
+- <code>Error</code> If element or ref was not found.
+
 
 | Param | Type | Description |
 | --- | --- | --- |

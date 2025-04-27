@@ -5,7 +5,7 @@ import del from 'rollup-plugin-delete';
 const banner = `/*!
 * DomSmith – Javascript Dom library
 * @license MIT
-* © 2016–2025 Frank Kudermann @ alphanull
+* © 2016–present Frank Kudermann @ alphanull
 */`;
 
 export default [
