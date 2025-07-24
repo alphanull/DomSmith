@@ -22,5 +22,31 @@ export default [
             resolve(),
             terser()
         ]
+    },
+    {
+        input: 'src/plugins/domSmithInputRange.js',
+        output: {
+            file: 'dist/plugins/domSmithInputRange.min.js',
+            format: 'esm',
+            sourcemap: false,
+            banner
+        },
+        plugins: [
+            resolve(),
+            terser()
+        ]
+    },
+    {
+        input: 'src/plugins/domSmithSelect.js',
+        output: {
+            file: 'dist/plugins/domSmithSelect.min.js',
+            format: 'esm',
+            sourcemap: false,
+            banner
+        },
+        plugins: [
+            resolve(),
+            terser()
+        ]
     }
 ];

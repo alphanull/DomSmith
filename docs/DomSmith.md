@@ -3,192 +3,194 @@
 <a name="module_DomSmith"></a>
 
 ## DomSmith
-The `DomSmith` is a utility class that helps to dynamically generate a DOM tree
-based on a declarative configuration. It supports event handling, DOM node creation,
-manipulation, and removal. Additionally, it ensures proper cleanup by removing events
-and references when the `teardown()` or `removeNode()` methods are called.
-This is especially useful for building UI components in a modular way where nodes can
-be dynamically added, updated, or removed.
 
-**Version**: 2.0.1  
-**Author**: Frank Kudermann @ alphanull  
-
-* [DomSmith](#module_DomSmith)
-    * [module.exports](#exp_module_DomSmith--module.exports) ⏏
-        * [new module.exports(nodeDef, [parentNode])](#new_module_DomSmith--module.exports_new)
-        * _instance_
-            * [._refs](#module_DomSmith--module.exports+_refs) : <code>WeakMap</code> ℗
-            * [._events](#module_DomSmith--module.exports+_events) : <code>WeakMap.&lt;HTMLElement, Object&gt;</code> ℗
-            * [._dom](#module_DomSmith--module.exports+_dom) : [<code>NodeDefinition</code>](#module_DomSmith--module.exports..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith--module.exports..NodeDefinition) ℗
-            * [._parent](#module_DomSmith--module.exports+_parent) : <code>HTMLElement</code> ℗
-            * [.mount(parentNode)](#module_DomSmith--module.exports+mount)
-            * [.unmount()](#module_DomSmith--module.exports+unmount)
-            * [.addNode(nodeDefArg, [parent])](#module_DomSmith--module.exports+addNode) ⇒ [<code>NodeDefinition</code>](#module_DomSmith--module.exports..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith--module.exports..NodeDefinition)
-            * [.replaceNode(ref, replaceDef)](#module_DomSmith--module.exports+replaceNode)
-            * [.removeNode([nodeDef])](#module_DomSmith--module.exports+removeNode)
-            * [.addEvent(eleOrRef, eventName, handler)](#module_DomSmith--module.exports+addEvent)
-            * [.removeEvent(eleOrRef, [eventName], [handler])](#module_DomSmith--module.exports+removeEvent)
-            * [.teardown()](#module_DomSmith--module.exports+teardown)
-        * _static_
-            * [.getSupportedDomEvents([tag])](#module_DomSmith--module.exports.getSupportedDomEvents) ⇒ <code>Array.&lt;string&gt;</code>
-        * _inner_
-            * [~NodeDefinition](#module_DomSmith--module.exports..NodeDefinition) : <code>Object</code>
-
-
-* * *
-
-<a name="exp_module_DomSmith--module.exports"></a>
-
-### module.exports ⏏
-**Kind**: Exported class  
-
-* * *
-
-<a name="new_module_DomSmith--module.exports_new"></a>
-
-#### new module.exports(nodeDef, [parentNode])
 Creates a new DomSmith instance.
 
+**Version**: 2.1.0
+**Author**: Frank Kudermann - alphanull
+**License**: MIT
 
 | Param | Type | Description |
 | --- | --- | --- |
-| nodeDef | [<code>NodeDefinition</code>](#module_DomSmith--module.exports..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith--module.exports..NodeDefinition) \| <code>string</code> | Node definition. Can be an object, a string, or an array of definitions. |
-| [parentNode] | <code>HTMLElement</code> | The parent node to mount the DOM elements to. |
+| nodeDef | [<code>NodeDefinition</code>](#module_DomSmith..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith..NodeDefinition) \| <code>string</code> | Node definition. Can be an object, a string, or an array of definitions. |
+| [options] | <code>HTMLElement</code> \| [<code>Options</code>](#module_DomSmith..Options) | Either a target HTMLElement or an options object. |
 
-
-* * *
-
-<a name="module_DomSmith--module.exports+_refs"></a>
-
-#### module.exports.\_refs : <code>WeakMap</code> ℗
-Stores additional node data for cleanup.
-
-**Kind**: instance property of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
-**Access**: private  
-
-* * *
-
-<a name="module_DomSmith--module.exports+_events"></a>
-
-#### module.exports.\_events : <code>WeakMap.&lt;HTMLElement, Object&gt;</code> ℗
-Central repository for event listeners.
-
-**Kind**: instance property of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
-**Access**: private  
-
-* * *
-
-<a name="module_DomSmith--module.exports+_dom"></a>
-
-#### module.exports.\_dom : [<code>NodeDefinition</code>](#module_DomSmith--module.exports..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith--module.exports..NodeDefinition) ℗
-The root node definition or an array of node definitions.
-
-**Kind**: instance property of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
-**Access**: private  
+* [DomSmith](#module_DomSmith)
+  * _instance_
+    * [._mountContext](#module_DomSmith+_mountContext) : <code>Object</code> ℗
+      * [.parent](#module_DomSmith+_mountContext.parent) : <code>HTMLElement</code> ℗
+    * [._refs](#module_DomSmith+_refs) : <code>WeakMap</code> ℗
+    * [._events](#module_DomSmith+_events) : <code>WeakMap.&lt;HTMLElement, Object&gt;</code> ℗
+    * [._dom](#module_DomSmith+_dom) : [<code>NodeDefinition</code>](#module_DomSmith..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith..NodeDefinition) ℗
+    * [.mount([options])](#module_DomSmith+mount)
+    * [.unmount()](#module_DomSmith+unmount)
+    * [.addNode(nodeDefArg, [parent])](#module_DomSmith+addNode) ⇒ [<code>NodeDefinition</code>](#module_DomSmith..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith..NodeDefinition)
+    * [.replaceNode(ref, replaceDef)](#module_DomSmith+replaceNode)
+    * [.removeNode([nodeDefArg])](#module_DomSmith+removeNode) ⇒ [<code>NodeDefinition</code>](#module_DomSmith..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith..NodeDefinition)
+    * [.addEvent(eleOrRef, eventName, handler)](#module_DomSmith+addEvent)
+    * [.removeEvent(eleOrRef, [eventName], [handler])](#module_DomSmith+removeEvent)
+    * ~~[.teardown()](#module_DomSmith+teardown)~~
+    * [.destroy()](#module_DomSmith+destroy)
+  * _static_
+    * [.getSupportedDomEvents([ele])](#module_DomSmith.getSupportedDomEvents) ⇒ <code>Array.&lt;string&gt;</code> ℗
+    * [.registerPlugin(plugin, [options])](#module_DomSmith.registerPlugin)
+  * _inner_
+    * [~NodeDefinition](#module_DomSmith..NodeDefinition) : <code>Object</code>
+    * [~Options](#module_DomSmith..Options) : <code>Object</code>
 
 * * *
 
-<a name="module_DomSmith--module.exports+_parent"></a>
+<a name="module_DomSmith+_mountContext"></a>
 
-#### module.exports.\_parent : <code>HTMLElement</code> ℗
+### domSmith.\_mountContext : <code>Object</code> ℗
+
+Stores mount information like target node, insertMode type, parent, and next sibling.
+
+**Kind**: instance property of [<code>DomSmith</code>](#module_DomSmith)
+**Access**: private
+
+* * *
+
+<a name="module_DomSmith+_mountContext.parent"></a>
+
+#### _mountContext.parent : <code>HTMLElement</code> ℗
+
 The parent DOM element where the constructed DOM tree is mounted.
 
-**Kind**: instance property of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
-**Access**: private  
+**Kind**: static property of [<code>\_mountContext</code>](#module_DomSmith+_mountContext)
+**Access**: private
 
 * * *
 
-<a name="module_DomSmith--module.exports+mount"></a>
+<a name="module_DomSmith+_refs"></a>
 
-#### module.exports.mount(parentNode)
-Mounts the created DOM element(s) into the specified parent node.
-For multiple nodes, each element is appended individually.
+### domSmith.\_refs : <code>WeakMap</code> ℗
 
-**Kind**: instance method of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
+Stores additional node data for cleanup.
+
+**Kind**: instance property of [<code>DomSmith</code>](#module_DomSmith)
+**Access**: private
+
+* * *
+
+<a name="module_DomSmith+_events"></a>
+
+### domSmith.\_events : <code>WeakMap.&lt;HTMLElement, Object&gt;</code> ℗
+
+Central repository for event listeners.
+
+**Kind**: instance property of [<code>DomSmith</code>](#module_DomSmith)
+**Access**: private
+
+* * *
+
+<a name="module_DomSmith+_dom"></a>
+
+### domSmith.\_dom : [<code>NodeDefinition</code>](#module_DomSmith..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith..NodeDefinition) ℗
+
+The root node definition or an array of node definitions.
+
+**Kind**: instance property of [<code>DomSmith</code>](#module_DomSmith)
+**Access**: private
+
+* * *
+
+<a name="module_DomSmith+mount"></a>
+
+### domSmith.mount([options])
+
+Mounts the created DOM element(s) into the specified location.
+Supports insertModes: 'append' (default), 'before', 'replace' and 'top.
+If called after unmount() without arguments, reuses the original location.
+
+**Kind**: instance method of [<code>DomSmith</code>](#module_DomSmith)
+**Throws**:
+
+* <code>Error</code> If injection node was not found.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| parentNode | <code>HTMLElement</code> | The parent node to mount the DOM elements to. |
-
+| [options] | <code>HTMLElement</code> \| <code>HTMLElement</code> \| [<code>Options</code>](#module_DomSmith..Options) | Either a target HTMLElement or an options object. |
 
 * * *
 
-<a name="module_DomSmith--module.exports+unmount"></a>
+<a name="module_DomSmith+unmount"></a>
 
-#### module.exports.unmount()
+### domSmith.unmount()
+
 Unmounts the created DOM element(s) from their parent node.
 For multiple nodes, each child element is removed individually.
+Also stores the original parent and nextSibling for potential re-mounting.
 
-**Kind**: instance method of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
+**Kind**: instance method of [<code>DomSmith</code>](#module_DomSmith)
 
 * * *
 
-<a name="module_DomSmith--module.exports+addNode"></a>
+<a name="module_DomSmith+addNode"></a>
 
-#### module.exports.addNode(nodeDefArg, [parent]) ⇒ [<code>NodeDefinition</code>](#module_DomSmith--module.exports..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith--module.exports..NodeDefinition)
+### domSmith.addNode(nodeDefArg, [parent]) ⇒ [<code>NodeDefinition</code>](#module_DomSmith..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith..NodeDefinition)
+
 Adds a DOM node based on a declarative definition.
 Supports string, object, or an array of node definitions.
 
-**Kind**: instance method of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
-**Returns**: [<code>NodeDefinition</code>](#module_DomSmith--module.exports..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith--module.exports..NodeDefinition) - A node definition object or an array of such objects.  
+**Kind**: instance method of [<code>DomSmith</code>](#module_DomSmith)
+**Returns**: [<code>NodeDefinition</code>](#module_DomSmith..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith..NodeDefinition) - A node definition object or an array of such objects.
 **Throws**:
 
-- <code>Error</code> If trying to add a duplicate ref or a property was not found.
-
+* <code>Error</code> If trying to add a duplicate ref or a property was not found.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| nodeDefArg | [<code>NodeDefinition</code>](#module_DomSmith--module.exports..NodeDefinition) | Node definition or an array of definitions. |
+| nodeDefArg | [<code>NodeDefinition</code>](#module_DomSmith..NodeDefinition) | Node definition or an array of definitions. |
 | [parent] | <code>Object</code> | Parent object (synthetic) to assign to the newly created node. |
-
 
 * * *
 
-<a name="module_DomSmith--module.exports+replaceNode"></a>
+<a name="module_DomSmith+replaceNode"></a>
 
-#### module.exports.replaceNode(ref, replaceDef)
+### domSmith.replaceNode(ref, replaceDef)
+
 Replaces an existing DOM node (specified by its ref) with a new node definition.
 This method first removes all events from the old node, then replaces it in the DOM.
 
-**Kind**: instance method of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
+**Kind**: instance method of [<code>DomSmith</code>](#module_DomSmith)
 **Throws**:
 
-- <code>Error</code> If an invalid ref was used.
-
+* <code>Error</code> If an invalid ref was used.
 
 | Param | Type | Description |
 | --- | --- | --- |
 | ref | <code>string</code> | Reference name of the node to be replaced. |
-| replaceDef | [<code>NodeDefinition</code>](#module_DomSmith--module.exports..NodeDefinition) | The new node definition to replace the old node. |
-
+| replaceDef | [<code>NodeDefinition</code>](#module_DomSmith..NodeDefinition) | The new node definition to replace the old node. |
 
 * * *
 
-<a name="module_DomSmith--module.exports+removeNode"></a>
+<a name="module_DomSmith+removeNode"></a>
 
-#### module.exports.removeNode([nodeDef])
+### domSmith.removeNode([nodeDefArg]) ⇒ [<code>NodeDefinition</code>](#module_DomSmith..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith..NodeDefinition)
+
 Removes all events and references associated with a DOM node.
 If the passed node definition is an array, iterates through each element.
 
-**Kind**: instance method of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
+**Kind**: instance method of [<code>DomSmith</code>](#module_DomSmith)
+**Returns**: [<code>NodeDefinition</code>](#module_DomSmith..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith..NodeDefinition) - The - possibly modified - node definition(s).
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| [nodeDef] | [<code>NodeDefinition</code>](#module_DomSmith--module.exports..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith--module.exports..NodeDefinition) | <code>this._dom</code> | The node definition(s) from which to remove events. |
-
+| [nodeDefArg] | [<code>NodeDefinition</code>](#module_DomSmith..NodeDefinition) \| [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith..NodeDefinition) | <code>this._dom</code> | The node definition(s) from which to remove events. |
 
 * * *
 
-<a name="module_DomSmith--module.exports+addEvent"></a>
+<a name="module_DomSmith+addEvent"></a>
 
-#### module.exports.addEvent(eleOrRef, eventName, handler)
+### domSmith.addEvent(eleOrRef, eventName, handler)
+
 Adds an event listener to the specified element and registers it in the central events repository.
 
-**Kind**: instance method of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
+**Kind**: instance method of [<code>DomSmith</code>](#module_DomSmith)
 **Throws**:
 
-- <code>Error</code> If element was not found, or handler is not a function.
-
+* <code>Error</code> If element was not found, or handler is not a function.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -196,22 +198,21 @@ Adds an event listener to the specified element and registers it in the central 
 | eventName | <code>string</code> | Event name (e.g., 'click'). |
 | handler | <code>function</code> \| <code>Array.&lt;function()&gt;</code> | Event handler(s) to add. |
 
-
 * * *
 
-<a name="module_DomSmith--module.exports+removeEvent"></a>
+<a name="module_DomSmith+removeEvent"></a>
 
-#### module.exports.removeEvent(eleOrRef, [eventName], [handler])
+### domSmith.removeEvent(eleOrRef, [eventName], [handler])
+
 Removes event listener(s) from the specified element.
 If no eventName and handler are provided, all event listeners for that element are removed.
 If an eventName is provided but no handler, then all handlers for that event are removed.
 Otherwise, only the specified handler for the given eventName is removed.
 
-**Kind**: instance method of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
+**Kind**: instance method of [<code>DomSmith</code>](#module_DomSmith)
 **Throws**:
 
-- <code>Error</code> If element or ref was not found.
-
+* <code>Error</code> If element or ref was not found.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -219,53 +220,99 @@ Otherwise, only the specified handler for the given eventName is removed.
 | [eventName] | <code>string</code> | Event name (e.g., 'click'). |
 | [handler] | <code>function</code> | Event handler to remove. |
 
+* * *
+
+<a name="module_DomSmith+teardown"></a>
+
+### ~~domSmith.teardown()~~
+
+***Since version 2.1.0.**_
+
+Cleans up all resources: removes all events, unmounts the DOM nodes, and clears all references.
+DEPRECATED, alias for `destroy()`.
+
+**Kind**: instance method of [<code>DomSmith</code>](#module_DomSmith)
 
 * * *
 
-<a name="module_DomSmith--module.exports+teardown"></a>
+<a name="module_DomSmith+destroy"></a>
 
-#### module.exports.teardown()
+### domSmith.destroy()
+
 Cleans up all resources: removes all events, unmounts the DOM nodes, and clears all references.
 
-**Kind**: instance method of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
+**Kind**: instance method of [<code>DomSmith</code>](#module_DomSmith)
+**Since**: 2.1.0
 
 * * *
 
-<a name="module_DomSmith--module.exports.getSupportedDomEvents"></a>
+<a name="module_DomSmith.getSupportedDomEvents"></a>
 
-#### module.exports.getSupportedDomEvents([tag]) ⇒ <code>Array.&lt;string&gt;</code>
+### DomSmith.getSupportedDomEvents([ele]) ⇒ <code>Array.&lt;string&gt;</code> ℗
+
 Returns an array of supported DOM event names for the given tag.
 
-**Kind**: static method of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
-**Returns**: <code>Array.&lt;string&gt;</code> - Sorted array of event names.  
+**Kind**: static method of [<code>DomSmith</code>](#module_DomSmith)
+**Returns**: <code>Array.&lt;string&gt;</code> - Sorted array of event names.
+**Access**: private
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [ele] | <code>HTMLElement</code> | The element for which to retrieve supported events. |
+
+* * *
+
+<a name="module_DomSmith.registerPlugin"></a>
+
+### DomSmith.registerPlugin(plugin, [options])
+
+Registers a singleton-style plugin for DomSmith.
+The plugin may define any of the following methods: addNode, removeNode, mount, unmount & destroy.
+Duplicate plugin instances will be ignored.
+
+**Kind**: static method of [<code>DomSmith</code>](#module_DomSmith)
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| [tag] | <code>string</code> | <code>&quot;&#x27;div&#x27;&quot;</code> | The tag for which to retrieve supported events. |
-
+| plugin | <code>Object</code> |  | The plugin object. |
+| [options] | <code>Object</code> |  | Additional Options for registration. |
+| [options.priority] | <code>number</code> | <code>0</code> | Priority value for plugin execution order (higher runs earlier). |
 
 * * *
 
-<a name="module_DomSmith--module.exports..NodeDefinition"></a>
+<a name="module_DomSmith..NodeDefinition"></a>
 
-#### module.exports~NodeDefinition : <code>Object</code>
+### DomSmith~NodeDefinition : <code>Object</code>
+
 Structure of a node definition
 
-**Kind**: inner typedef of [<code>module.exports</code>](#exp_module_DomSmith--module.exports)  
+**Kind**: inner typedef of [<code>DomSmith</code>](#module_DomSmith)
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| [tag] | <code>string</code> | Tag name of the element. Defaults to 'div' if unspecified. |
-| [text] | <code>string</code> | Text content for text nodes. |
-| [ref] | <code>string</code> | A unique reference name used to store a direct reference on the DomSmith instance. |
-| [events] | <code>Object.&lt;string, (function()\|Array.&lt;function()&gt;)&gt;</code> | Object containing event names and their handler(s). |
+| [_tag] | <code>string</code> | Tag name of the element. Defaults to 'div' if unspecified. |
+| [_text] | <code>string</code> | Text content for text nodes. |
+| [_ref] | <code>string</code> | A unique reference name used to store a direct reference on the DomSmith instance. |
+| [_events] | <code>Object.&lt;string, (function()\|Array.&lt;function()&gt;)&gt;</code> | Object containing event names and their handler(s). |
+| [_nodes] | [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith..NodeDefinition) | Child node definitions; can be a single NodeDefinition, a string, or an array of them. |
 | [any] | <code>\*</code> | Additional properties that will be assigned either directly or via setAttribute. |
-| [nodes] | [<code>Array.&lt;NodeDefinition&gt;</code>](#module_DomSmith--module.exports..NodeDefinition) | Child node definitions; can be a single NodeDefinition, a string, or an array of them. |
-
 
 * * *
 
+<a name="module_DomSmith..Options"></a>
+
+### DomSmith~Options : <code>Object</code>
+
+**Kind**: inner typedef of [<code>DomSmith</code>](#module_DomSmith)
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| node | <code>HTMLElement</code> | Target DOM node for mounting or insertion. |
+| [insertMode] | <code>&#x27;append&#x27;</code> \| <code>&#x27;before&#x27;</code> \| <code>&#x27;replace&#x27;</code> | Injection strategy. Use 'append' to append, 'before' to insert before the node, or 'replace' to replace it. Defaults to 'append'. |
+
+* * *
 
  * * *
 
