@@ -57,7 +57,6 @@
     "scripts": {
         "doc": "jsdoc2md --private --separators --template ./scripts/docTemplate.hbs --files ./src/*.js > ./docs/DomSmith.md",
         "lint": "echo 'Running ESLint...' && eslint src/ --max-warnings=0",
-        "build": "npm run lint && rollup -c ./scripts/rollup.config.js",
-        "dev": "npx http-server . -p 8080 -o examples/index.html"
+        "build": "npm run lint && rollup -c ./scripts/rollup.config.js"
     }
 }
